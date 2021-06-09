@@ -1,5 +1,5 @@
 ```
-# Cria arquivos locais de configuração inicial
+# Baixa bibliotecas
 terraform init
 
 # Vê as mudanças
