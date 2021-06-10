@@ -1,14 +1,23 @@
-resource "aws_s3_bucket" "my-bucket" {
-  bucket = var.bucket_name
+locals {
+  bucket_name = "${random_pet.bucket.id}-${var.environment}"
+
+  test_filename = "TestFile.json"
+}
+
+
+resource "aws_s3_bucket" "this" {
+  bucket = local.bucket_name
   acl    = "private"
 
   tags = {
-    Name = "Teste"
+    Service     = "Curso Terraform"
+    Environment = var.environment
   }
 }
 
-resource "aws_s3_bucket_policy" "my-bucket" {
-  bucket = aws_s3_bucket.my-bucket.id
+
+resource "aws_s3_bucket_policy" "this" {
+  bucket = aws_s3_bucket.this.id
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -19,11 +28,27 @@ resource "aws_s3_bucket_policy" "my-bucket" {
         Effect    = "Deny"
         Principal = "*"
         Action    = "s3:*"
-        Resource  = "arn:aws:s3:::${var.bucket_name}/*"
+        Resource  = "arn:aws:s3:::${local.bucket_name}/*"
         Condition = {
           IpAddress = { "aws:SourceIp" = "8.8.8.8/32" }
         }
       },
     ]
   })
+}
+
+
+resource "aws_s3_bucket_object" "object1" {
+  bucket = aws_s3_bucket.this.id
+
+  # Nome que será apresentado no bucket
+  key = local.test_filename
+
+  # Caminho local do arquivo
+  source = "./files/${local.test_filename}"
+
+  # Identifica quanto o conteúdo do arquivo foi alterado para poder subir novamente
+  etag = filemd5("./files/${local.test_filename}")
+
+
 }

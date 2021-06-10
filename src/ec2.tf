@@ -1,6 +1,9 @@
 resource "aws_instance" "web" {
-  ami           = var.instance_ami
-  instance_type = var.instance_type
+  ami           = "ami-07bfd9965e7b972d1"
+  instance_type = "t3.micro"
 
-  tags = var.instance_tags
+  tags = {
+    Name = "First Instance"
+    Env  = var.environment
+  }
 }

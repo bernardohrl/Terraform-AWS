@@ -1,31 +1,11 @@
 variable "aws_region" {
   type        = string
   description = ""
+  default     = "sa-east-1"
 }
 
-variable "instance_ami" {
+variable "environment" {
   type        = string
   description = ""
-}
-
-variable "instance_type" {
-  type        = string
-  description = ""
-}
-
-variable "instance_tags" {
-  type        = map(string)
-  description = ""
-
-  default = {
-    Name    = "Primeira Instância"
-    Project = "Terraform AWS"
-    Env     = "Dev"
-  }
-}
-
-
-variable "bucket_name" {
-  type        = string
-  description = ""
+  default     = "dev"
 }
