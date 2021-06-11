@@ -47,8 +47,28 @@ resource "aws_s3_bucket_object" "object1" {
   # Caminho local do arquivo
   source = "./files/${local.test_filename}"
 
+  # Tipo do Arquivo
+  content_type = "application/json"
+
   # Identifica quanto o conteúdo do arquivo foi alterado para poder subir novamente
   etag = filemd5("./files/${local.test_filename}")
+}
 
 
+resource "aws_s3_bucket_object" "object2" {
+  bucket = aws_s3_bucket.this.id
+
+  key          = "${random_pet.bucket.id}.json"
+  source       = "./files/${local.test_filename}"
+  content_type = "application/json"
+
+  etag = filemd5("./files/${local.test_filename}")
+}
+
+resource "aws_s3_bucket" "manual" {
+  bucket = "bucket-criado-por-mim"
+
+  tags = {
+    Managed_By = "Terraform"
+  }
 }
