@@ -38,4 +38,9 @@ terraform console
 
 # Importar recursos criados manualmente
 terraform import <comando específico para cada recurso>
+
+
+# Roda com backend
+terraform init -backend=true -backend-config="backend.hcl"
+
 ```
